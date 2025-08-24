@@ -1,4 +1,4 @@
-// File: C:\Users\carlo\Downloads\wellness-halo-v3\wellness-halo-v3\app\layout.tsx
+// File: C:\Users\carlo\Desktop\The Wellness Halo\Website.2025\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
