@@ -1,37 +1,26 @@
-// app/blog/[slug]/page.tsx
-import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
-type PageProps = {
-  params: { slug: string };
-  searchParams?: Record<string, string | string[] | undefined>;
-};
+// Explicitly type params for Next 15
+interface BlogPageProps {
+  params: {
+    slug: string;
+  };
+}
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function BlogPage({ params }: BlogPageProps) {
   const { slug } = params;
 
-  // TODO: load your post using `slug`
-  // const post = await getPostBySlug(slug)
-  // if (!post) notFound();
-
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">Blog post: {slug}</h1>
-      <p>Replace this with real content.</p>
+    <main>
+      <h1>Blog post: {slug}</h1>
     </main>
   );
 }
 
-/**
- * If you want SSG (prebuild pages), return an array of params objects:
- *   [{ slug: "first-post" }, { slug: "second-post" }]
- * If you don't have slugs yet or want everything dynamic, delete this
- * function and keep the `export const dynamic = "force-dynamic"` line instead.
- */
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  // Example: no prebuilt posts yet
+// For dynamic route handling
+export async function generateStaticParams() {
   return [];
 }
 
-// For fully dynamic pages during build, leave this ON.
-// (Remove it if you implement real SSG above.)
+// Keep dynamic rendering safe for build
 export const dynamic = "force-dynamic";
