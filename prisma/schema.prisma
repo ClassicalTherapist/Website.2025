@@ -1,0 +1,51 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  name      String   // "Swedish", "Deep Tissue", etc.
+  minutes   Int      // 60, 90, 120
+  priceCents Int     // store cents to avoid float issues
+  active    Boolean  @default(true)
+  bookings  Booking[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, minutes]) //  e.g. "Swedish" + 60 must be unique
+}
+
+model Booking {
+  id           String   @id @default(cuid())
+  clientName   String
+  clientEmail  String
+  clientPhone  String?
+  // where the massage happens
+  street       String
+  city         String
+  state        String
+  postalCode   String
+  // time & service
+  startAt      DateTime
+  endAt        DateTime
+  serviceId    String
+  service      Service  @relation(fields: [serviceId], references: [id])
+  // status
+  status       BookingStatus @default(PENDING)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([startAt])
+}
+
+enum BookingStatus {
+  PENDING     // created, not yet paid/confirmed
+  CONFIRMED   // paid / confirmed
+  CANCELED
+}
